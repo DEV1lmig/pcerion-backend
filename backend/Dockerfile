@@ -1,25 +1,48 @@
-# Development stage
-FROM node:18 as development
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY tsconfig.json ./
-COPY ./src ./src
-CMD [ "npm", "run", "start:dev" ]
+FROM node:18.17.0 as builder
 
-# Builder stage
-FROM development as builder
-WORKDIR /usr/src/app
-# Build the app with devDependencies still installed from "development" stage
-RUN npm run build
-# Clear dependencies and reinstall for production (no devDependencies)
+WORKDIR /
+
+COPY . . 
+
 RUN rm -rf node_modules
-RUN npm ci --only=production
+
+RUN apt-get update
+
+RUN apt-get install -y python
+
+RUN npm install -g npm@latest
+
+RUN npm install --loglevel=error
+RUN npm install -g cross-env
+
+RUN npm run build
 
 
-# Production stage
-FROM alpine:latest as production
-RUN apk --no-cache add nodejs ca-certificates
-WORKDIR /root/
-COPY --from=builder /usr/src/app ./
-CMD [ "node", "dist/main" ]
+FROM node:18.17.0
+
+WORKDIR /
+
+RUN mkdir dist
+
+COPY package*.json ./ 
+
+COPY develop.sh .
+
+COPY .env .
+
+COPY medusa-config.js .
+
+RUN apt-get update
+
+RUN apt-get install -y python3
+# RUN apk add --no-cache python3
+
+RUN npm install -g @medusajs/medusa-cli
+
+RUN npm i --only=production
+
+COPY --from=builder /dist ./dist
+
+EXPOSE 9000
+
+ENTRYPOINT ["./develop.sh", "start"]
