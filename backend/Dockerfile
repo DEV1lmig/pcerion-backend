@@ -8,18 +8,19 @@ RUN rm -rf node_modules
 
 RUN apt-get update
 
-RUN apt-get install -y python
+RUN apt-get install -y python3
 
 RUN npm install -g npm@latest
 
 RUN npm install --loglevel=error
+RUN npm install -g cross-env
 
 RUN npm run build
 
 
 FROM node:18.17.0
 
-WORKDIR /app/medusa
+WORKDIR ../backend
 
 RUN mkdir dist
 
