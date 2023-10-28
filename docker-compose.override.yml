@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  backend:
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./backend:/app/medusa
+      - backend_node_modules:/app/medusa/node_modules
+    ports:
+      - "9000:9000"
+
+volumes:
+  backend_node_modules:
