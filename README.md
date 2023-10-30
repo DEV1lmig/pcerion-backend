@@ -8,7 +8,7 @@
   </a>
 </p>
 <h1 align="center">
-  Medusaaa
+  Medusa
 </h1>
 
 <h4 align="center">
