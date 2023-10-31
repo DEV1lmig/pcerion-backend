@@ -1,48 +1,22 @@
-FROM node:18.17.0 as builder
+#Dependencies
+FROM node:18-alpine3.16 as deps 
+WORKDIR /app/medusa/
+# Copy package.json and yarn.lock to the workdir
+COPY ./backend/package.json .
+COPY ./backend/yarn.lock .
+# Install depes
+RUN yarn install --frozen-lockfile
 
-WORKDIR /
-
-COPY . . 
-
-RUN rm -rf node_modules
-
-RUN apt-get update
-
-RUN apt-get install -y python
-
-RUN npm install -g npm@latest
-
-RUN npm install --loglevel=error
-RUN npm install -g cross-env
-
-RUN npm run build
-
-
-FROM node:18.17.0
-
-WORKDIR /
-
-RUN mkdir dist
-
-COPY package*.json ./ 
-
-COPY develop.sh .
-
-COPY .env .
-
-COPY medusa-config.js .
-
-RUN apt-get update
-
-RUN apt-get install -y python3
-# RUN apk add --no-cache python3
-
-RUN npm install -g @medusajs/medusa-cli
-
-RUN npm i --only=production
-
-COPY --from=builder /dist ./dist
-
-EXPOSE 9000
-
-ENTRYPOINT ["./develop.sh", "start"]
+#Build
+FROM node:18-alpine3.16 as builder
+WORKDIR /app/medusa/
+# Copy cached node_modules from deps
+COPY --FROM=deps /app/medusa/node_modules /app/medusa/node_modules
+# Install python and medusa-cli
+RUN apk update
+RUN apk add python3
+RUN yarn global add @medusajs/medusa-cli@latest
+# Copy app source code
+COPY ./backend /app/medusa
+# Image entrypoint develop
+ENTRYPOINT ["/bin/sh", "./develop.sh", "start"]
