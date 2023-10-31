@@ -2,8 +2,8 @@
 FROM node:18-alpine3.16 as deps 
 WORKDIR /app/medusa/
 # Copy package.json and yarn.lock to the workdir
-COPY ./package.json .
-COPY ./yarn.lock .
+COPY ./backend/package.json .
+COPY ./backend/yarn.lock .
 # Install depes
 RUN yarn install --frozen-lockfile
 
@@ -17,6 +17,6 @@ RUN apk update
 RUN apk add python3
 RUN yarn global add @medusajs/medusa-cli@latest
 # Copy app source code
-COPY ./ /app/medusa
+COPY ./dist/ /app/medusa
 # Image entrypoint develop
 ENTRYPOINT ["/bin/sh", "./start.sh", "start"]
