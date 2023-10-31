@@ -19,4 +19,4 @@ RUN yarn global add @medusajs/medusa-cli@latest
 # Copy app source code
 COPY ./backend/ /app/medusa
 # Image entrypoint develop
-ENTRYPOINT ["/bin/sh", "./start.sh", "start"]
+ENTRYPOINT ["/bin/sh", "./start.sh", "develop"]
