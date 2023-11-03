@@ -17,7 +17,7 @@
 </h4>
 
 <p align="center">
-  Building blocks for digital commerceE
+  Building blocks for digital commerce
 </p>
 <p align="center">
   <a href="https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md">
