@@ -40,13 +40,14 @@ const plugins = [
     resolve: `@medusajs/file-local`,
     options: {
       upload_dir: "uploads",
+      backend_url: "https://pcerion-backend-production.up.railway.app/"
     },
   },
   {
     resolve: "@medusajs/admin",
     /** @type {import('@medusajs/admin').PluginOptions} */
     options: {
-      autoRebuild: true,
+      autoRebuild: false,
       develop: {
         open: process.env.OPEN_BROWSER !== "false",
       },
