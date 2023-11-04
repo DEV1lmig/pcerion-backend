@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-.env
-=======
 /dist
 .env
 .DS_Store
@@ -12,6 +9,8 @@ yarn-error.log
 coverage
 
 !src/**
+
+/backend
 
 ./tsconfig.tsbuildinfo
 package-lock.json
@@ -26,4 +25,3 @@ build
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
->>>>>>> e6274cf (second commit)
