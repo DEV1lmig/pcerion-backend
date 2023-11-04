@@ -40,7 +40,7 @@ const plugins = [
     resolve: `@medusajs/file-local`,
     options: {
       upload_dir: "uploads",
-      backend_url: "https://pcerion-backend-production.up.railway.app/"
+      backend_url: "https://pcerion-backend-production.up.railway.app"
     },
   },
   {
